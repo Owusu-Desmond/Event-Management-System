@@ -18,7 +18,6 @@ function setEventsIds(){
         localStorage.setItem("event_ids", JSON.stringify(ids));
     }
 }
-setEventsIds();
 function fetchEventIdFromStore() {
     return JSON.parse(localStorage.getItem("event_ids"));
 }
@@ -81,11 +80,11 @@ function addEventslists(event_id,event_name,event_start_date,event_end_date,even
     <div class="card-body">
       <div class="row">
         <div class="col-6">
-            <h5 class="card-title text-warning">${event_host_name}</h5>
+            <h5 class="card-title text-warning">Host Name : ${event_host_name}</h5>
             <p><b>Start Date</b> : <span class="badge bg-info rounded-pill">${event_start_date}</span></p>
         </div>
         <div class="col-6">
-            <h5 class="text-warning">${event_speaker_name}</h5>
+            <h5 class="text-warning">Speaker Name : ${event_speaker_name}</h5>
             <div><b>End Date</b> : <span class="badge bg-info rounded-pill">${event_end_date}</span></div>
         </div>
       </div>
@@ -118,11 +117,11 @@ function loadEventFromStoreAndListThem(){
     <div class="card-body">
       <div class="row">
         <div class="col-6">
-            <h5 class="card-title text-warning">${event.event_host_name}</h5>
+            <h5 class="card-title text-warning">Host Name : ${event.event_host_name}</h5>
             <p><b>Start Date</b> : <span class="badge bg-info rounded-pill">${event.event_start_date}</span></p>
         </div>
         <div class="col-6">
-            <h5 class="text-warning">${event.event_speaker_name}</h5>
+            <h5 class="text-warning">Speaker Name : ${event.event_speaker_name}</h5>
             <div><b>End Date</b> : <span class="badge bg-info rounded-pill">${event.event_end_date}</span></div>
         </div>
       </div>
@@ -135,9 +134,15 @@ function loadEventFromStoreAndListThem(){
     eventsMainContainer.appendChild(eventContainer);
     });
 } 
-loadEventFromStoreAndListThem();
 
 document.querySelector("#event_form").addEventListener("submit", event => {
     event.preventDefault();
+    // add event
     addEvent()
+})
+document.addEventListener('DOMContentLoaded', event =>{
+    // load events from Storage and list them
+    loadEventFromStoreAndListThem();
+    // Set events Id`s
+    setEventsIds();
 })
