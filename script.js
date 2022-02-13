@@ -22,6 +22,16 @@ setEventsIds();
 function fetchEventIdFromStore() {
     return JSON.parse(localStorage.getItem("event_ids"));
 }
+function clearForm() {
+    document.querySelector("#eventName").value = '';
+    document.querySelector("#startDate").value = '';
+    document.querySelector("#endDate").value = '';
+    document.querySelector("#totalExRgs").value = '';
+    document.querySelector("#typeOfEvent").value = '';
+    document.querySelector("#hostName").value = '';
+    document.querySelector("#speakerName").value = '';
+
+}
 function addEvent(){
     // cupture event details
     const event_name = document.querySelector("#eventName").value;
@@ -31,6 +41,8 @@ function addEvent(){
     const event_type = document.querySelector("#typeOfEvent").value;
     const event_host_name = document.querySelector("#hostName").value;
     const event_speaker_name = document.querySelector("#speakerName").value;
+    // clear form after submit
+    clearForm();
 
     //automatically  get event id ramdomly and delete from store
     let event_ids = fetchEventIdFromStore();
