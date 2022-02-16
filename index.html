@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="https://bootswatch.com/5/quartz/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS only -->
     <title>Event Management App</title>
@@ -13,7 +14,7 @@
     <div class="container-xxl">
         <div class="row">
             <!-- Form Container -->
-            <div class="col-md-7 col-sm-12"> 
+            <div class="col-md-6 col-sm-12"> 
                 <form class="mt-2" id="event_form">
                     <fieldset class="form-group border p-3">
                         <legend class="w-auto px-2">Event Details</legend>
@@ -26,6 +27,8 @@
                     <div class="input-group mt-3">
                         <span class="input-group-text">Start Date</span>
                         <input type="date" id="startDate" class="form-control" required>
+                    </div>
+                    <div class="input-group mt-3">                        
                         <span class="input-group-text">End Date</span>
                         <input type="date" id="endDate" class="form-control" required>
                     </div>
@@ -50,23 +53,7 @@
                 </form>
             </div>
                 <!-- List of event container -->
-            <div id="events_list" class="col-md-5 col-sm-12">
-                <div class="card text-dark mt-3 mb-3" style="max-width: 100%;">
-                    <div class="card-header fs-3 text-primary">Event Name<span class="badge bg-info rounded-pill">Event id</span></div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-6">
-                            <h5 class="card-title text-warning">Host Name</h5>
-                            <p><b>Start Date</b> : <span class="badge bg-info rounded-pill">01/05/2022</span></p>
-                        </div>
-                        <div class="col-6">
-                            <h5 class="text-warning">Speaker Name</h5>
-                            <div><b>End Date</b> : <span class="badge bg-info rounded-pill">03/05/2022</span></div>
-                        </div>
-                      </div>
-                      <p class="fs-5"><b>Type of event : </b> <span>Football Event</span></p>
-                    </div>
-                </div>
+            <div id="events_list" class="col-md-6 col-sm-12">
                 <div class="text-center text-success mt-2 fs-3 fw-bold">Available Event</div>
             </div>
         </div>

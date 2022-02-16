@@ -35,7 +35,8 @@ function addEvent(){
     // cupture event details
     const event_name = document.querySelector("#eventName").value;
     const event_start_date = document.querySelector("#startDate").value;
-    const event_end_date = document.querySelector("#endDate").value;
+
+     const event_end_date = document.querySelector("#endDate").value;
     const event_total_expect_registration = document.querySelector("#totalExRgs").value;
     const event_type = document.querySelector("#typeOfEvent").value;
     const event_host_name = document.querySelector("#hostName").value;
@@ -45,7 +46,6 @@ function addEvent(){
 
     //automatically  get event id ramdomly and delete from store
     let event_ids = fetchEventIdFromStore();
-    console.log(fetchEventIdFromStore());
     let randomIndex = getRandomIndexOfArray(0, event_ids.length - 1);
     let event_id = event_ids[randomIndex];
     
@@ -67,31 +67,47 @@ function addEvent(){
         event_speaker_name
     });
     addEventsToStorage(events)
-    addEventslists(event_id,event_name,event_start_date,event_end_date,event_total_expect_registration,event_type,event_host_name,event_speaker_name)
-    console.log(events);
-    
+    addEventslists(event_id,event_name,event_start_date,event_end_date,event_total_expect_registration,event_type,event_host_name,event_speaker_name)    
 }
 function addEventslists(event_id,event_name,event_start_date,event_end_date,event_total_expect_registration,event_type,event_host_name,event_speaker_name) {
     const eventsMainContainer = document.querySelector("#events_list");
     const eventContainer = document.createElement('div');
+    eventContainer.dataset.id = event_id;
+    eventContainer.classList.add("event");
     eventContainer.innerHTML = `
     <div class="card text-dark mt-3 mb-3" style="max-width: 100%;">
-    <div class="card-header fs-3 text-primary">${event_name} <span class="badge bg-info rounded-pill">${event_id}</span></div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-6">
-            <h5 class="card-title text-warning">Host Name : ${event_host_name}</h5>
-            <p><b>Start Date</b> : <span class="badge bg-info rounded-pill">${event_start_date}</span></p>
+        <div class="card-header fs-3 text-primary">${event_name} 
+            <span class="badge bg-info rounded-pill">${event_id}</span>
+            <a class="btn btn-outline-primary btn-sm float-end">
+                <i class="bi bi-trash3 fs-5 delete" data-id="${event_id}"></i>
+            </a>
+            <a class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-pencil-square fs-5 edit" data-id="${event_id}"></i>
+            </a>
         </div>
-        <div class="col-6">
-            <h5 class="text-warning">Speaker Name : ${event_speaker_name}</h5>
-            <div><b>End Date</b> : <span class="badge bg-info rounded-pill">${event_end_date}</span></div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <h5 class="card-title"><span class="text-info">Host Name </span>: 
+                        <span class="text-warning">${event_host_name}</span>
+                    </h5>
+                    <p><b>Start Date</b> : 
+                        <span class="badge bg-info rounded-pill">${event_start_date}</span>
+                    </p>
+                </div>
+                <div class="col-6">
+                    <h5 class="card-title">
+                        <span class="text-info">Speaker Name</span>: 
+                        <span class="text-warning">${event_speaker_name}</span>
+                    </h5>
+                    <div><b>End Date</b> : 
+                        <span class="badge bg-info rounded-pill">${event_end_date}</span>
+                    </div>
+                </div>
+            </div>
+            <p class="fs-5"><b>Type of event : </b> <span>${event_type}</span></p>
+            <p class="fs-5"><b>Total expected registration : </b> <span>${event_total_expect_registration}</span></p>
         </div>
-      </div>
-      <p class="fs-5"><b>Type of event : </b> <span>${event_type}</span></p>
-      <p class="fs-5"><b>Total expected registration : </b> <span>${event_total_expect_registration}</span></p>
-      
-    </div>
     </div>
     `;
     eventsMainContainer.appendChild(eventContainer);
@@ -109,32 +125,21 @@ function loadEventFromStoreAndListThem(){
         return;
     }
     events.forEach(event => {
-    const eventsMainContainer = document.querySelector("#events_list");
-    const eventContainer = document.createElement('div');
-    eventContainer.innerHTML = `
-    <div class="card text-dark mt-3 mb-3" style="max-width: 100%;">
-    <div class="card-header fs-3 text-primary">${event.event_name} <span class="badge bg-info rounded-pill">${event.event_id}</span></div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-6">
-            <h5 class="card-title text-warning">Host Name : ${event.event_host_name}</h5>
-            <p><b>Start Date</b> : <span class="badge bg-info rounded-pill">${event.event_start_date}</span></p>
-        </div>
-        <div class="col-6">
-            <h5 class="text-warning">Speaker Name : ${event.event_speaker_name}</h5>
-            <div><b>End Date</b> : <span class="badge bg-info rounded-pill">${event.event_end_date}</span></div>
-        </div>
-      </div>
-      <p class="fs-5"><b>Type of event : </b> <span>${event.event_type}</span></p>
-      <p class="fs-5"><b>Total expected registration : </b> <span>${event.event_total_expect_registration}</span></p>
-      
-    </div>
-    </div>
-    `;
-    eventsMainContainer.appendChild(eventContainer);
-    });
+        addEventslists(
+            event.event_id,event.event_name,event.event_start_date,
+            event.event_end_date,event.event_total_expect_registration,
+            event.event_type,event.event_host_name,event.event_speaker_name
+        )
+    })
+   
 } 
-
+// delete an event from list function
+function deleteAnEventFromList(event) {
+    if(event.target.classList.contains('delete')){
+        const eventId = event.target.dataset.id;
+        document.querySelector(`.event[data-id="${eventId}"`).remove()
+    }
+}
 document.querySelector("#event_form").addEventListener("submit", event => {
     event.preventDefault();
     // add event
@@ -145,4 +150,8 @@ document.addEventListener('DOMContentLoaded', event =>{
     loadEventFromStoreAndListThem();
     // Set events Id`s
     setEventsIds();
+})
+//delete an event
+document.querySelector("#events_list").addEventListener('click', event => {
+    deleteAnEventFromList(event);
 })
