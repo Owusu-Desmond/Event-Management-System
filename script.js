@@ -52,7 +52,7 @@ function addEvent(){
     event_ids.splice(randomIndex, 1);
 
     
-    let events = fetchStudentFromStorage();
+    let events = fetchEventsFromStorage();
     if (events === null) {
         events = []
     }
@@ -112,7 +112,7 @@ function addEventslists(event_id,event_name,event_start_date,event_end_date,even
     `;
     eventsMainContainer.appendChild(eventContainer);
 }
-function fetchStudentFromStorage() {
+function fetchEventsFromStorage() {
     return JSON.parse(localStorage.getItem("events"));
 }
 function addEventsToStorage(events){
@@ -120,7 +120,7 @@ function addEventsToStorage(events){
     return localStorage.setItem('events',data)
 }
 function loadEventFromStoreAndListThem(){
-    let events = fetchStudentFromStorage();
+    let events = fetchEventsFromStorage();
     if (events === null) {
         return;
     }
@@ -133,12 +133,21 @@ function loadEventFromStoreAndListThem(){
     })
    
 } 
-// delete an event from list function
+// delete an event from list function and storage 
 function deleteAnEventFromList(event) {
     if(event.target.classList.contains('delete')){
         const eventId = event.target.dataset.id;
         document.querySelector(`.event[data-id="${eventId}"`).remove()
+        
+        let events = fetchEventsFromStorage();
+        events.forEach((event,index) => {
+            if(eventId === event.event_id){
+                events.splice(index,1);
+            }
+        });
+        addEventsToStorage(events);
     }
+    
 }
 document.querySelector("#event_form").addEventListener("submit", event => {
     event.preventDefault();
