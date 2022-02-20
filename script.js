@@ -43,7 +43,14 @@ class userInterface {
         let randomIndex = this.ids.getRandomIndexOfArray(0, event_ids.length - 1);
         let event_id = event_ids[randomIndex];
         
-        event_ids.splice(randomIndex, 1);
+        // delecting used Id From event_ids
+        event_ids.forEach((eventId,index) => {
+            if(event_id == eventId){
+                event_ids.splice(index,1)
+                this.storage.addEventIds(event_ids)
+                alert('this event Id deleted From store')
+            }
+        })
     
         
         let events = this.storage.fetchEvents();
@@ -164,6 +171,10 @@ class userInterface {
 class storage {
     fetchEventsId() {
         return JSON.parse(localStorage.getItem("event_ids"));
+    }
+    addEventIds(eventIds){
+        let data = JSON.stringify(eventIds)
+        return localStorage.setItem('event_ids',data)
     }
     fetchEvents() {
         return JSON.parse(localStorage.getItem("events"));
