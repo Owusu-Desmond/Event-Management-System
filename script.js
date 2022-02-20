@@ -131,20 +131,34 @@ class userInterface {
         })
        
     } 
-    deleteAnEvent(event) {
+    deleteEvent(event) {
         if(event.target.classList.contains('delete')){
+            const eventId = event.target.dataset.id;
+            document.querySelector(`.event[data-id="${eventId}"`).remove()
+            this.storage.deleteEvent(eventId);
+        }
+        
+    }
+    editEvent(event){
+        if(event.target.classList.contains('edit')){
             const eventId = event.target.dataset.id;
             document.querySelector(`.event[data-id="${eventId}"`).remove()
             
             let events = this.storage.fetchEvents();
-            events.forEach((event,index) => {
-                if(eventId === event.event_id){
-                    events.splice(index,1);
+            events.forEach(event => {
+                if(eventId == event.event_id){
+                    document.querySelector("#eventName").value = event.event_name;
+                    document.querySelector("#startDate").value = event.event_start_date;
+                    document.querySelector("#endDate").value = event.event_end_date;
+                    document.querySelector("#totalExRgs").value = event.event_total_expect_registration;
+                    document.querySelector("#typeOfEvent").value = event.event_type;
+                    document.querySelector("#hostName").value = event.event_host_name;
+                    document.querySelector("#speakerName").value = event.event_speaker_name;
                 }
-            });
-            this.storage.addEvents(events);
+            })
+            this.storage.deleteEvent(eventId);
         }
-        
+
     }
 }
 class storage {
@@ -158,22 +172,35 @@ class storage {
         let data = JSON.stringify(events)
         return localStorage.setItem('events',data)
     }
+    deleteEvent(eventId){
+        let events = this.fetchEvents();
+            events.forEach((event,index) => {
+                if(eventId === event.event_id){
+                    events.splice(index,1);
+                }
+            });
+            this.addEvents(events);
+        }
 }
 
 const UI = new userInterface(new storage(),new ids());
-
+// when form submit
 document.querySelector("#event_form").addEventListener("submit", event => {
     event.preventDefault();
     // add event
     UI.addEvent()
 })
+// when Document loads
 document.addEventListener('DOMContentLoaded', event =>{
     // load events from Storage and list them
     UI.listEvents();
     // Set events Id`s
     new ids().setEventsIds();
-})
-//delete an event
+});
+//delete and edit an event
 document.querySelector("#events_list").addEventListener('click', event => {
-    UI.deleteAnEvent(event);
+    // delete an event
+    UI.deleteEvent(event);
+    // edit an event
+    UI.editEvent(event);
 })
