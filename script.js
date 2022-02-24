@@ -1,58 +1,78 @@
- class ids {
-    createArrayOfNumbers(start,end) {
+class ID {
+    /**
+     * Create an array of numbers
+     * @param {number} start 
+     * @param {number} end 
+     * @returns an array of numbers
+     */
+    static createArrayOfNumbers(start, end) {
         let array = [];
         for (let i = start; i <= end; i += 25) {
             array.push("OAD" + i);
         }
-        return array;    
+        return array;
     }
-    getRandomIndexOfArray(min, max) {
+
+    /**
+     * @param {number} min 
+     * @param {number} max 
+     * @returns random index of array
+     */
+    static getRandomIndexOfArray(min, max) {
         let step1 = max - min + 1;
         let step2 = Math.random() * step1;
-        let result =  Math.floor(step2) + min;
+        let result = Math.floor(step2) + min;
         return result;
     }
-    setEventsIds(){
+
+    // Set IDs
+    static setEventsIds() {
+        // Get the fields
         let ids = localStorage.getItem("event_ids");
-        if (ids === null){
-            ids = this.createArrayOfNumbers(100,999)
+
+        // Check whether the localStorage field is not set
+        if (ids === null) {
+            ids = ID.createArrayOfNumbers(100, 999)
+
+            // Set the field
             localStorage.setItem("event_ids", JSON.stringify(ids));
         }
     }
 }
-class userInterface {
-    constructor(storage,ids)
-    {
+
+// UI
+class UI {
+    constructor(storage) {
         this.storage = storage;
-        this.ids = ids;
     }
-    addEvent(){
+    addEvent() {
         // cupture event details
-        const event_name = document.querySelector("#eventName").value;
-        const event_start_date = document.querySelector("#startDate").value;
-        const event_end_date = document.querySelector("#endDate").value;
-        const event_total_expect_registration = document.querySelector("#totalExRgs").value;
-        const event_type = document.querySelector("#typeOfEvent").value;
-        const event_host_name = document.querySelector("#hostName").value;
-        const event_speaker_name = document.querySelector("#speakerName").value;
+        const event_name = document.querySelector("#eventName").value,
+            event_start_date = document.querySelector("#startDate").value,
+            event_end_date = document.querySelector("#endDate").value,
+            event_total_expect_registration = document.querySelector("#totalExRgs").value,
+            event_type = document.querySelector("#typeOfEvent").value,
+            event_host_name = document.querySelector("#hostName").value,
+            event_speaker_name = document.querySelector("#speakerName").value;
+
         // clear form after submit
         this.clearForm();
-    
+
         //automatically  get event id ramdomly and delete from store
         let event_ids = this.storage.fetchEventsId();
-        let randomIndex = this.ids.getRandomIndexOfArray(0, event_ids.length - 1);
+        let randomIndex = ID.getRandomIndexOfArray(0, event_ids.length - 1);
         let event_id = event_ids[randomIndex];
-        
+
         // delecting used Id From event_ids
-        event_ids.forEach((eventId,index) => {
-            if(event_id == eventId){
-                event_ids.splice(index,1)
-                this.storage.addEventIds(event_ids)
-                alert('this event Id deleted From store')
+        event_ids.forEach((eventId, index) => {
+            if (event_id == eventId) {
+                event_ids.splice(index, 1);
+                this.storage.addEventIds(event_ids);
+                alert('this event Id deleted From store');
             }
         })
-    
-        
+
+
         let events = this.storage.fetchEvents();
         if (events === null) {
             events = []
@@ -69,19 +89,33 @@ class userInterface {
             event_speaker_name
         });
         this.storage.addEvents(events)
-        this.appendEvent(event_id,event_name,event_start_date,event_end_date,event_total_expect_registration,event_type,event_host_name,event_speaker_name)    
+        this.appendEvent(event_id, event_name, event_start_date, event_end_date, event_total_expect_registration, event_type, event_host_name, event_speaker_name)
     }
+
+    /**
+     * Clear the form
+     */
     clearForm() {
-        document.querySelector("#eventName").value = '';
-        document.querySelector("#startDate").value = '';
-        document.querySelector("#endDate").value = '';
-        document.querySelector("#totalExRgs").value = '';
-        document.querySelector("#typeOfEvent").value = '';
-        document.querySelector("#hostName").value = '';
-        document.querySelector("#speakerName").value = '';
-    
+        // Clear all values
+        document.querySelector("#eventName").value =
+            document.querySelector("#startDate").value =
+            document.querySelector("#endDate").value =
+            document.querySelector("#totalExRgs").value =
+            document.querySelector("#typeOfEvent").value =
+            document.querySelector("#hostName").value =
+            document.querySelector("#speakerName").value = "";
     }
-    appendEvent(event_id,event_name,event_start_date,event_end_date,event_total_expect_registration,event_type,event_host_name,event_speaker_name) {
+
+    appendEvent(
+        event_id,
+        event_name,
+        event_start_date,
+        event_end_date,
+        event_total_expect_registration,
+        event_type,
+        event_host_name,
+        event_speaker_name
+    ) {
         const eventsMainContainer = document.querySelector("#events_list");
         const eventContainer = document.createElement('div');
         eventContainer.dataset.id = event_id;
@@ -124,36 +158,37 @@ class userInterface {
         `;
         eventsMainContainer.appendChild(eventContainer);
     }
-    listEvents(){
+
+    listEvents() {
         let events = this.storage.fetchEvents();
-        if (events === null) {
+        if (events === null)
             return;
-        }
+
         events.forEach(event => {
             this.appendEvent(
-                event.event_id,event.event_name,event.event_start_date,
-                event.event_end_date,event.event_total_expect_registration,
-                event.event_type,event.event_host_name,event.event_speaker_name
+                event.event_id, event.event_name, event.event_start_date,
+                event.event_end_date, event.event_total_expect_registration,
+                event.event_type, event.event_host_name, event.event_speaker_name
             )
-        })
-       
-    } 
+        });
+    }
+
     deleteEvent(event) {
-        if(event.target.classList.contains('delete')){
+        if (event.target.classList.contains('delete')) {
             const eventId = event.target.dataset.id;
             document.querySelector(`.event[data-id="${eventId}"`).remove()
             this.storage.deleteEvent(eventId);
         }
-        
+
     }
-    editEvent(event){
-        if(event.target.classList.contains('edit')){
+    editEvent(event) {
+        if (event.target.classList.contains('edit')) {
             const eventId = event.target.dataset.id;
             document.querySelector(`.event[data-id="${eventId}"`).remove()
-            
+
             let events = this.storage.fetchEvents();
             events.forEach(event => {
-                if(eventId == event.event_id){
+                if (eventId == event.event_id) {
                     document.querySelector("#eventName").value = event.event_name;
                     document.querySelector("#startDate").value = event.event_start_date;
                     document.querySelector("#endDate").value = event.event_end_date;
@@ -165,53 +200,53 @@ class userInterface {
             })
             this.storage.deleteEvent(eventId);
         }
-
     }
 }
-class storage {
+
+class StudentsStore {
     fetchEventsId() {
         return JSON.parse(localStorage.getItem("event_ids"));
     }
-    addEventIds(eventIds){
-        let data = JSON.stringify(eventIds)
-        return localStorage.setItem('event_ids',data)
+
+    addEventIds(eventIds) {
+        return localStorage.setItem('event_ids', JSON.stringify(eventIds));
     }
     fetchEvents() {
         return JSON.parse(localStorage.getItem("events"));
     }
-    addEvents(events){
-        let data = JSON.stringify(events)
-        return localStorage.setItem('events',data)
+
+    addEvents(events) {
+        return localStorage.setItem('events', JSON.stringify(events));
     }
-    deleteEvent(eventId){
+
+    deleteEvent(eventId) {
         let events = this.fetchEvents();
-            events.forEach((event,index) => {
-                if(eventId === event.event_id){
-                    events.splice(index,1);
-                }
-            });
-            this.addEvents(events);
-        }
+        events.forEach((event, index) => {
+            if (eventId === event.event_id)
+                events.splice(index, 1);
+        });
+        this.addEvents(events);
+    }
 }
 
-const UI = new userInterface(new storage(),new ids());
+const ui = new UI(new StudentsStore());
 // when form submit
 document.querySelector("#event_form").addEventListener("submit", event => {
     event.preventDefault();
     // add event
-    UI.addEvent()
+    ui.addEvent();
 })
 // when Document loads
-document.addEventListener('DOMContentLoaded', event =>{
+document.addEventListener('DOMContentLoaded', () => {
     // load events from Storage and list them
-    UI.listEvents();
+    ui.listEvents();
     // Set events Id`s
-    new ids().setEventsIds();
+    ID.setEventsIds();
 });
 //delete and edit an event
 document.querySelector("#events_list").addEventListener('click', event => {
     // delete an event
-    UI.deleteEvent(event);
+    ui.deleteEvent(event);
     // edit an event
-    UI.editEvent(event);
+    ui.editEvent(event);
 })
