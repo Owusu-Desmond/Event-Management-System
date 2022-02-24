@@ -58,7 +58,7 @@ class UI {
         // clear form after submit
         this.clearForm();
 
-        //automatically  get event id ramdomly and delete from store
+        // automatically get event id ramdomly and delete from store
         let event_ids = this.storage.fetchEventsId();
         let randomIndex = ID.getRandomIndexOfArray(0, event_ids.length - 1);
         let event_id = event_ids[randomIndex];
@@ -203,7 +203,7 @@ class UI {
     }
 }
 
-class StudentsStore {
+class EventStore {
     fetchEventsId() {
         return JSON.parse(localStorage.getItem("event_ids"));
     }
@@ -229,7 +229,7 @@ class StudentsStore {
     }
 }
 
-const ui = new UI(new StudentsStore());
+const ui = new UI(new EventStore());
 // when form submit
 document.querySelector("#event_form").addEventListener("submit", event => {
     event.preventDefault();
