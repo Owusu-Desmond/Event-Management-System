@@ -1,28 +1,62 @@
 # Event management system App
-App to manage events by
-- Creating an events
-- Deleting an events
-- Editing an events
 
-## Create Events
-- Create form to allow user to enter Event details.
-- Cupture event details.
-- Store Events Details to Local Storage of your browser.
-- Append event to aready exiting events to the UI.
+Project to manage upcoming events purposely build to learn how to store, update and retrieve data from the local Storage of a browser.
+This project have the following fuctionallity
 
-## Delete an event
-### Deleting an event from list
-- Create a button on each event and add eventListener `click`.
-- If that button contain a class called `delele`.
-- Target the data-id which has been set for button.
-- Select a query with class `event` and have the same data-id as the button.
-- Add `remove()` method to the selected query to remove that event from list.
+- Create Events
+- Delete an event
+- Deleting an event form Storage
+- Edit an event
 
-### Deleting an event form Storage
-- Fetch events from storage.
-- Loop through the fetch data (using `forEach` statement).
-- Use `splice()` method to delete the event when eventID match the one you want to edit.
-- Storage the left events.
+## Setup
 
-## Edit an event
-Note : The edit event takes the same proceedure as the delete method but the only difference is to collect the data you want to delete and put these data to the form for the user edit them.
+If you installed git you can clone the code to your machine, or download a ZIP of all the files directly.
+
+[Download the ZIP from this location](https://github.com/Owusu-Desmond/Event-Management-System/archive/refs/heads/main.zip), or run the following [git](https://git-scm.com/downloads) command to clone the files to your machine:
+
+## Live Demo Link
+
+Access the the online version of my application with this link
+[Live Demo](https://owusu-desmond.github.io/Event-Management-System/)
+
+## Build With
+
+- Editor : Visual studio code
+
+- Languages
+
+  - [ ] HTML
+  - [ ] CSS
+  - [ ] JavaScript
+
+- Terminologies used
+  - [ ] LocalStorage
+
+## Author
+
+👤 **Desmond Owusu Ansah**
+
+- Github [@Owusu-Desmond](https://github.com/Owusu-Desmond)
+- Twitter [@DesmondOwusuDev](https://twitter.com/DesmondOwusuDev)
+- LinkedIn [@desmond-owusu-ansah](https://www.linkedin.com/in/desmond-owusu-ansah-09274a223/)
+- Dev.to [@desmondowusudev](https://dev.to/desmondowusudev)
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+
+Feel free to check the [issues page](https://github.com/Owusu-Desmond/Event-Management-System/issues).
+
+## Show your support
+
+Give a ⭐️ if you like this project!
+
+## Acknowledgments
+
+- Hat tip to anyone whose code was used
+- Inspiration
+- etc
+
+## 📝 License
+
+This project is [MIT](./LICENSE) licensed.
